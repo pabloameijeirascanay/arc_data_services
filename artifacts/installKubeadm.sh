@@ -44,9 +44,9 @@ while sleep 1; do sudo -s rsync -a /var/lib/waagent/custom-script/download/0/ins
 # Installing Azure CLI & Azure Arc extensions
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-sudo -u $adminUsername az extension add --name connectedk8s
-sudo -u $adminUsername az extension add --name k8s-configuration
-sudo -u $adminUsername az extension add --name k8s-extension
+sudo -u $adminUsername az extension add --name connectedk8s --yes
+sudo -u $adminUsername az extension add --name k8s-configuration --yes
+sudo -u $adminUsername az extension add --name k8s-extension --yes
 
 echo "Log in to Azure"
 sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --password $SPN_CLIENT_SECRET --tenant $SPN_TENANT_ID
@@ -146,7 +146,7 @@ sudo -u $adminUsername az k8s-extension create --name "azuremonitor-containers" 
 
 # Copying workload Kubeadm kubeconfig file to staging storage account
 echo ""
-sudo -u $adminUsername az extension add --upgrade -n storage-preview
+sudo -u $adminUsername az extension add --upgrade -n storage-preview  --yes
 storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
 storageContainerName="staging-kubeadm"
 export localPath="/home/${adminUsername}/.kube/config"
