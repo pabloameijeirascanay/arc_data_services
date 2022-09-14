@@ -132,12 +132,13 @@ sudo systemctl enable --now nfs-server
 sudo exportfs -rav
 sudo showmount -e localhost
 
-helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
-helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+sudo -u $adminUsername helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+sudo -u $adminUsername helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
     --set nfs.server=127.0.0.1 \
     --set nfs.path=/srv/nfs/kubedata
 
-kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+#Patch sc
+sudo -u $adminUsername kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
 # To enable a single node cluster remove the taint that limits the first node to master only service.
 sudo -u $adminUsername kubectl taint nodes --all node-role.kubernetes.io/control-plane-
