@@ -132,22 +132,22 @@ Start-Sleep -Seconds 20
 
 # Create Custom Location
 ## NOTE: Adding this line ## (https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/custom-locations#enable-custom-locations-on-your-cluster)
-$SP_OID=$(az ad sp show --id $Env:spnClientId --query id -o tsv)
-az connectedk8s enable-features -n $connectedClusterName -g $Env:resourceGroup --custom-locations-oid $SP_OID --features cluster-connect custom-locations
+# $SP_OID=$(az ad sp show --id $Env:spnClientId --query id -o tsv)
+# az connectedk8s enable-features -n $connectedClusterName -g $Env:resourceGroup --custom-locations-oid $SP_OID --features cluster-connect custom-locations
 
-az customlocation create --name 'jumpstart-cl' `
-                         --resource-group $Env:resourceGroup `
-                         --namespace arc `
-                         --host-resource-id $connectedClusterId `
-                         --cluster-extension-ids $extensionId `
-                         --kubeconfig $Env:KUBECONFIG
+# az customlocation create --name 'jumpstart-cl' `
+#                          --resource-group $Env:resourceGroup `
+#                          --namespace arc `
+#                          --host-resource-id $connectedClusterId `
+#                          --cluster-extension-ids $extensionId `
+#                          --kubeconfig $Env:KUBECONFIG
 
 # Deploying Azure Arc Data Controller
 Write-Host "`n"
 Write-Host "Deploying Azure Arc Data Controller"
 Write-Host "`n"
 
-$customLocationId = $(az customlocation show --name "jumpstart-cl" --resource-group $Env:resourceGroup --query id -o tsv)
+# $customLocationId = $(az customlocation show --name "jumpstart-cl" --resource-group $Env:resourceGroup --query id -o tsv)
 $workspaceId = $(az resource show --resource-group $Env:resourceGroup --name $Env:workspaceName --resource-type "Microsoft.OperationalInsights/workspaces" --query properties.customerId -o tsv)
 $workspaceKey = $(az monitor log-analytics workspace get-shared-keys --resource-group $Env:resourceGroup --workspace-name $Env:workspaceName --query primarySharedKey -o tsv)
 
@@ -156,7 +156,7 @@ $dataControllerParams = "$Env:TempDir\dataController.parameters.json"
 (Get-Content -Path $dataControllerParams) -replace 'resourceGroup-stage',$Env:resourceGroup | Set-Content -Path $dataControllerParams
 (Get-Content -Path $dataControllerParams) -replace 'azdataUsername-stage',$Env:AZDATA_USERNAME | Set-Content -Path $dataControllerParams
 (Get-Content -Path $dataControllerParams) -replace 'azdataPassword-stage',$Env:AZDATA_PASSWORD | Set-Content -Path $dataControllerParams
-(Get-Content -Path $dataControllerParams) -replace 'customLocation-stage',$customLocationId | Set-Content -Path $dataControllerParams
+# (Get-Content -Path $dataControllerParams) -replace 'customLocation-stage',$customLocationId | Set-Content -Path $dataControllerParams
 (Get-Content -Path $dataControllerParams) -replace 'subscriptionId-stage',$Env:subscriptionId | Set-Content -Path $dataControllerParams
 (Get-Content -Path $dataControllerParams) -replace 'spnClientId-stage',$Env:spnClientId | Set-Content -Path $dataControllerParams
 (Get-Content -Path $dataControllerParams) -replace 'spnTenantId-stage',$Env:spnTenantId | Set-Content -Path $dataControllerParams

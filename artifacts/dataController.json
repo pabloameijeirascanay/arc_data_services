@@ -27,9 +27,6 @@
       "azdataPassword": {
         "type": "SecureString"
       },
-      "customLocation": {
-        "type": "String"
-      },
       "subscriptionId": {
         "type": "String"
       },
@@ -102,10 +99,6 @@
         "apiVersion": "[parameters('apiVersion')]",
         "name": "[parameters('controllerName')]",
         "location": "[parameters('location')]",
-        "extendedLocation": {
-          "name": "[parameters('customLocation')]",
-          "type": "CustomLocation"
-        },
         "tags": "[parameters('resourceTags')]",
         "properties": {
           "metricsDashboardCredential": {

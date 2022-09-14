@@ -20,9 +20,6 @@
       "azdataPassword": {
         "value": "azdataPassword-stage"
       },
-      "customLocation": {
-        "value": "customLocation-stage"
-      },
       "subscriptionId": {
         "value": "subscriptionId-stage"
       },
