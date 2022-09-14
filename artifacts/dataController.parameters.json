@@ -9,7 +9,7 @@
         "value": "arc"
       },
       "connectionMode": {
-        "value": "direct"
+        "value": "indirect"
       },
       "controllerName": {
         "value": "jumpstart-dc"
@@ -62,13 +62,13 @@
         "value": "arcdata"
       },
       "dataStorageClass": {
-        "value": "managed-premium"
+        "value": "nfs-client"
       },
       "dataStorageSize": {
         "value": "15Gi"
       },
       "logsStorageClass": {
-        "value": "managed-premium"
+        "value": "nfs-client"
       },
       "logsStorageSize": {
         "value": "10Gi"

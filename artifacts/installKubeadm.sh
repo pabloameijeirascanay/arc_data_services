@@ -121,6 +121,24 @@ sudo chown -R $adminUsername /home/$adminUsername/.kube/config
 
 sudo -u $adminUsername kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
+#NFS server
+echo "Creating dynamic NFS provisioning in Kubernetes..."
+sudo apt update && sudo apt upgrade
+sudo apt -y install nfs-kernel-server
+sudo mkdir /srv/nfs/kubedata -p
+sudo chown $adminUsername: /srv/nfs/kubedata
+sudo sed -i -e '$a/srv/nfs/kubedata *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)' /etc/exports
+sudo systemctl enable --now nfs-server
+sudo exportfs -rav
+sudo showmount -e localhost
+
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+    --set nfs.server=127.0.0.1 \
+    --set nfs.path=/srv/nfs/kubedata
+
+kubectl patch storageclass nfs-client -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
 # To enable a single node cluster remove the taint that limits the first node to master only service.
 sudo -u $adminUsername kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
