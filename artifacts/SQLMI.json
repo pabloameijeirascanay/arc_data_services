@@ -15,9 +15,6 @@
       "dataControllerId": {
         "type": "String"
       },
-      "customLocation": {
-        "type": "String"
-      },
       "subscriptionId": {
         "type": "String"
       },
@@ -94,10 +91,6 @@
         "apiVersion": "[parameters('apiVersion')]",
         "name": "jumpstart-sql",
         "location": "[parameters('location')]",
-        "extendedLocation": {
-          "type": "CustomLocation",
-          "name": "[parameters('customLocation')]"
-        },
         "tags": "[parameters('resourceTags')]",
         "sku": {
           "name": "vCore",
